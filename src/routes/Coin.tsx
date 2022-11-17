@@ -5,6 +5,6 @@ interface RouteParms {
 }
 function Coin() {
   const { coinId } = useParams<RouteParms>();
-  return <h1>Coin {coinId}</h1>;
+  return <h1>Coin: {coinId}</h1>;
 }
 export default Coin;
