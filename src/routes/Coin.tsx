@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useQueries, useQuery } from "react-query";
 import {
   useParams,
   useLocation,
@@ -8,6 +9,7 @@ import {
   useRouteMatch,
 } from "react-router-dom";
 import styled from "styled-components";
+import { fetchConiInfo, fetchConiTickers } from "../api";
 import Chart from "./Chart";
 import Price from "./Price";
 
@@ -150,12 +152,21 @@ interface PriceData {
 }
 function Coin() {
   const { coinId } = useParams<RouteParms>();
-  const [loading, setLoading] = useState(false);
   const { state } = useLocation<RouteState>();
-  const [info, setInfo] = useState<InfoData>();
-  const [priceInfo, setPriceInfo] = useState<PriceData>();
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
+  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
+    ["info", coinId],
+    () => fetchConiInfo(coinId)
+  );
+  const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
+    ["tickers", coinId],
+    () => fetchConiTickers(coinId)
+  );
+  const loading = infoLoading || tickersLoading;
+  /*  const [loading, setLoading] = useState(false);
+  const [info, setInfo] = useState<InfoData>();
+  const [priceInfo, setPriceInfo] = useState<PriceData>();
   useEffect(() => {
     (async () => {
       const infoData = await (
@@ -167,12 +178,12 @@ function Coin() {
       setInfo(infoData);
       setPriceInfo(priceData);
     })();
-  }, [coinId]);
+  }, [coinId]); */
   return (
     <Container>
       <Header>
         <Title>
-          {state?.name ? state.name : loading ? "Loading..." : info?.name}
+          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
       </Header>
       {loading ? (
@@ -182,31 +193,31 @@ function Coin() {
           <Overview>
             <OverviewItem>
               <span>Rank:</span>
-              <span>{info?.rank}</span>
+              <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Symbol: </span>
               <span>
                 <Img
-                  src={`https://coinicons-api.vercel.app/api/icon/${info?.symbol.toLowerCase()}`}
+                  src={`https://coinicons-api.vercel.app/api/icon/${infoData?.symbol.toLowerCase()}`}
                   alt="No Img"
                 />
               </span>
             </OverviewItem>
             <OverviewItem>
               <span>Open Source:</span>
-              <span>{info?.open_source ? "Yes" : "No"}</span>
+              <span>{infoData?.open_source ? "Yes" : "No"}</span>
             </OverviewItem>
           </Overview>
-          <Description>{info?.description}</Description>
+          <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
               <span>Total Suply:</span>
-              <span>{priceInfo?.total_supply}</span>
+              <span>{tickersData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Max Supply:</span>
-              <span>{priceInfo?.max_supply}</span>
+              <span>{tickersData?.max_supply}</span>
             </OverviewItem>
           </Overview>
           <Tabs>
