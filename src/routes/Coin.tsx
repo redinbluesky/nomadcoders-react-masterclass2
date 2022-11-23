@@ -163,22 +163,8 @@ function Coin() {
     ["tickers", coinId],
     () => fetchConiTickers(coinId)
   );
-  const loading = infoLoading || tickersLoading;
-  /*  const [loading, setLoading] = useState(false);
-  const [info, setInfo] = useState<InfoData>();
-  const [priceInfo, setPriceInfo] = useState<PriceData>();
-  useEffect(() => {
-    (async () => {
-      const infoData = await (
-        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      ).json();
-      const priceData = await (
-        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      ).json();
-      setInfo(infoData);
-      setPriceInfo(priceData);
-    })();
-  }, [coinId]); */
+  //const loading = infoLoading || tickersLoading;
+  const loading = false;
   return (
     <Container>
       <Header>
@@ -233,7 +219,7 @@ function Coin() {
               <Price />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart />
+              <Chart coinId={coinId} />
             </Route>
           </Switch>
         </>
