@@ -17,7 +17,7 @@ export function fetchConiTickers(coinId: string) {
     response.json()
   );
 
-export function fetchConiHistory(coinId: string) {
+export function fetchCoinHistory(coinId: string) {
   const endDate = Math.floor(Date.now() / 1000); // 현재 시간을 초로 나타냄
   const startDate = endDate - 60 * 60 * 23; // 23시간 전을 초로 나나탬
   return fetch(
@@ -44,7 +44,7 @@ export function fetchConiTickers(coinId: string) {
   );
 }
 
-export function fetchConiHistory(coinId: string) {
+export function fetchCoinHistory(coinId: string) {
   return fetch(`http://localhost:3000/ohlcv.json`).then((response) =>
     response.json()
   );
