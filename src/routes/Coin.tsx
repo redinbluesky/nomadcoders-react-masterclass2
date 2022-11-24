@@ -31,7 +31,7 @@ const Container = styled.div`
 const Header = styled.header`
   height: 10vh;
   display: flex;
-  justify-content: right;
+  justify-content: center;
   align-items: center;
   margin-bottom: 10px;
 `;
@@ -39,7 +39,6 @@ const Header = styled.header`
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
-  margin-right: 100px;
 `;
 
 const Loader = styled.span`
@@ -168,7 +167,11 @@ interface PriceData {
     };
   };
 }
-function Coin() {
+
+interface ICoinProps {
+  isDark: boolean;
+}
+function Coin({ isDark }: ICoinProps) {
   const { coinId } = useParams<RouteParms>();
   const { state } = useLocation<RouteState>();
   const priceMatch = useRouteMatch("/:coinId/price");
@@ -183,7 +186,6 @@ function Coin() {
     { refetchInterval: 10000 }
   );
   const loading = infoLoading || tickersLoading;
-  //const loading = false;
   return (
     <Container>
       <Helmet>
@@ -195,9 +197,6 @@ function Coin() {
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
-        <HomeBtn>
-          <Link to="/">Home</Link>
-        </HomeBtn>
       </Header>
       {loading ? (
         <Loader>"Loading..."</Loader>
@@ -219,7 +218,7 @@ function Coin() {
             </OverviewItem>
             <OverviewItem>
               <span>Price:</span>
-              <span>{tickersData?.quotes.USD.price}</span>
+              <span>{tickersData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -246,7 +245,7 @@ function Coin() {
               <Price />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart coinId={coinId} />
+              <Chart isDark={isDark} coinId={coinId} />
             </Route>
           </Switch>
         </>
