@@ -31,7 +31,7 @@ const Container = styled.div`
 const Header = styled.header`
   height: 10vh;
   display: flex;
-  justify-content: center;
+  justify-content: right;
   align-items: center;
   margin-bottom: 10px;
 `;
@@ -39,6 +39,7 @@ const Header = styled.header`
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
+  margin-right: 100px;
 `;
 
 const Loader = styled.span`
@@ -79,6 +80,22 @@ const Tabs = styled.div`
   grid-template-columns: repeat(2, 1fr);
   margin: 25px 0px;
   gap: 10px;
+`;
+
+const HomeBtn = styled.div`
+  display: flex;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: 400;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 7px 0px;
+  margin-top: 10px;
+  border-radius: 10px;
+  color: ${(props) => props.theme.accentColor};
+  a {
+    display: block;
+  }
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
@@ -165,8 +182,8 @@ function Coin() {
     () => fetchConiTickers(coinId),
     { refetchInterval: 10000 }
   );
-  //const loading = infoLoading || tickersLoading;
-  const loading = false;
+  const loading = infoLoading || tickersLoading;
+  //const loading = false;
   return (
     <Container>
       <Helmet>
@@ -178,6 +195,9 @@ function Coin() {
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
+        <HomeBtn>
+          <Link to="/">Home</Link>
+        </HomeBtn>
       </Header>
       {loading ? (
         <Loader>"Loading..."</Loader>

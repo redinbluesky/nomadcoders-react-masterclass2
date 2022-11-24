@@ -27,25 +27,25 @@ export function fetchCoinHistory(coinId: string) {
 */
 
 export function fetchCoins() {
-  return fetch(`http://localhost:3000/coins.json`).then((response) =>
+  return fetch(`${process.env.PUBLIC_URL}/coins.json`).then((response) =>
     response.json()
   );
 }
 
 export function fetchConiInfo(coinId: string) {
-  return fetch(`http://localhost:3000/btc-bitcoin.json`).then((response) =>
+  return fetch(`${process.env.PUBLIC_URL}/btc-bitcoin.json`).then((response) =>
     response.json()
   );
 }
 
 export function fetchConiTickers(coinId: string) {
-  return fetch(`http://localhost:3000/tickers-btc-bitcoin.json`).then(
+  return fetch(`${process.env.PUBLIC_URL}/tickers-btc-bitcoin.json`).then(
     (response) => response.json()
   );
 }
 
 export function fetchCoinHistory(coinId: string) {
-  return fetch(`http://localhost:3000/ohlcv.json`).then((response) =>
+  return fetch(`${process.env.PUBLIC_URL}/ohlcv.json`).then((response) =>
     response.json()
   );
 }
